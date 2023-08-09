@@ -82,7 +82,13 @@ def create_or_update_policies(config: dict, params: dict) -> dict:
         params = _build_payload(params)
         endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{params.get('policy_name')}?api-version={config.get('api_version')}"
         method = "PUT"
+        prop_dict = {"properties": {}}
 
+        for p in ['managedRules', 'customRules', 'policySettings']:
+            if params.get(p) is not None:
+                prop_dict.get("properties").update(params.pop(p))
+
+        params.update(prop_dict)
         AZ = AzureWebAppFirewall(config=config)
         response = AZ.make_rest_call(endpoint=endpoint, method=method, payload=params)
         return response
@@ -103,6 +109,7 @@ def delete_policy(config: dict, params: dict) -> dict:
         logger.error(f"Error Occurred in Delete Policy {err}")
         raise ConnectorError(err)
 
+
 def get_policy(config: dict, params: dict) -> dict:
     try:
         endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{params.get('policy_name')}?api-version={config.get('api_version')}"
@@ -115,6 +122,7 @@ def get_policy(config: dict, params: dict) -> dict:
         logger.error(f"Error Occurred in Get Policy {err}")
         raise ConnectorError(err)
 
+
 def list_policies(config: dict, params: dict) -> dict:
     try:
         endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies?api-version={config.get('api_version')}"
@@ -125,6 +133,7 @@ def list_policies(config: dict, params: dict) -> dict:
     except Exception as err:
         logger.error(f"Error Occurred in List Policies {err}")
         raise ConnectorError(err)
+
 
 def list_all_policies(config: dict, params: dict) -> dict:
     try:
@@ -137,6 +146,7 @@ def list_all_policies(config: dict, params: dict) -> dict:
     except Exception as err:
         logger.error(f"Error Occurred in List All Policies {err}")
         raise ConnectorError(err)
+
 
 def _build_payload(params):
     return {key: val for key, val in params.items() if val is not None and val != ''}
