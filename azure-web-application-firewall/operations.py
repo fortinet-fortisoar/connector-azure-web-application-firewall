@@ -77,7 +77,7 @@ class AzureWebAppFirewall(object):
             raise ConnectorError('{0}'.format(e))
 
 
-def create_or_update_policies(config: dict, params: dict) -> dict:
+def create_or_update_policy(config: dict, params: dict) -> dict:
     try:
         params = _build_payload(params)
         endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{params.get('policy_name')}?api-version={config.get('api_version')}"
@@ -125,26 +125,20 @@ def get_policy(config: dict, params: dict) -> dict:
 
 def list_policies(config: dict, params: dict) -> dict:
     try:
-        endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies?api-version={config.get('api_version')}"
-        method = "GET"
-        AZ = AzureWebAppFirewall(config=config)
-        response = AZ.make_rest_call(endpoint=endpoint, method=method)
-        return response
+        if params.get("option") == "Within a Resource Group":
+            endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies?api-version={config.get('api_version')}"
+            method = "GET"
+            AZ = AzureWebAppFirewall(config=config)
+            response = AZ.make_rest_call(endpoint=endpoint, method=method)
+            return response
+        else:
+            endpoint = f"/subscriptions/{config.get('subscription_id')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies?api-version={config.get('api-version')}"
+            method = "GET"
+            AZ = AzureWebAppFirewall(config=config)
+            response = AZ.make_rest_call(endpoint=endpoint, method=method)
+            return response
     except Exception as err:
         logger.error(f"Error Occurred in List Policies {err}")
-        raise ConnectorError(err)
-
-
-def list_all_policies(config: dict, params: dict) -> dict:
-    try:
-        endpoint = f"/subscriptions/{config.get('subscription_id')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies?api-version={config.get('api-version')}"
-        method = "GET"
-
-        AZ = AzureWebAppFirewall(config=config)
-        response = AZ.make_rest_call(endpoint=endpoint, method=method)
-        return response
-    except Exception as err:
-        logger.error(f"Error Occurred in List All Policies {err}")
         raise ConnectorError(err)
 
 
@@ -153,9 +147,8 @@ def _build_payload(params):
 
 
 operations = {
-    "create_or_update_policies": create_or_update_policies,
+    "create_or_update_policy": create_or_update_policy,
     "delete_policy": delete_policy,
     "get_policy": get_policy,
     "list_policies": list_policies,
-    "list_all_policies": list_all_policies,
 }

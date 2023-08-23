@@ -209,9 +209,9 @@
   },
   "operations": [
     {
-      "operation": "create_or_update_policies",
-      "title": "Create Or Update Policies",
-      "annotation": "create_or_update_policies",
+      "operation": "create_or_update_policy",
+      "title": "Create Or Update Policy",
+      "annotation": "create_or_update_policy",
       "description": "Creates or update policy with specified rule set name within a resource group.",
       "category": "investigation",
       "is_config_required": true,
@@ -229,14 +229,24 @@
           "description": "Specify the Name of the Policy you want to create."
         },
         {
+          "name": "managedRules",
+          "title": "Managed Rules",
+          "type": "json",
+          "editable": true,
+          "visible": true,
+          "required": true,
+          "tooltip": "Specify the Managed Rules definition that you want to create within the Resource Group. Ex-\n{\n  \"managedRules\": {\n    \"exclusions\": [],\n    \"managedRuleSets\": [\n      {\n        \"ruleGroupOverrides\": [],\n        \"ruleSetType\": \"OWASP\",\n        \"ruleSetVersion\": \"3.0\"\n      }\n    ]\n  }\n}",
+          "description": "Specify the Managed Rules definition that you want to create within the Resource Group."
+        },
+        {
           "name": "id",
           "title": "Resource ID",
           "type": "text",
           "editable": true,
           "visible": true,
           "required": false,
-          "tooltip": "Specify the Resource ID",
-          "description": "Specify the Resource ID"
+          "tooltip": "Specify the Resource ID to which you want to apply the WAF policy. This can be found inside the Properties Fields of your Azure Resource, It is of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{resourceProviderNamespace}/{resourceType}/{resourceName}",
+          "description": "Specify the Resource ID to which you want to apply the WAF policy. This can be found inside the Properties Fields of your Azure Resource, It is of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{resourceProviderNamespace}/{resourceType}/{resourceName}"
         },
         {
           "name": "location",
@@ -251,22 +261,12 @@
         {
           "name": "tags",
           "title": "Tags",
-          "type": "text",
-          "editable": true,
-          "visible": true,
-          "required": false,
-          "tooltip": "Specify the Resource tags.",
-          "description": "Specify the Resource tags."
-        },
-        {
-          "name": "managedRules",
-          "title": "Managed Rules",
           "type": "json",
           "editable": true,
           "visible": true,
-          "required": true,
-          "tooltip": "Specify the Managed Rules definition that you want to create within the Resource Group. Ex-\n{\n  \"managedRules\": {\n    \"exclusions\": [],\n    \"managedRuleSets\": [\n      {\n        \"ruleGroupOverrides\": [],\n        \"ruleSetType\": \"OWASP\",\n        \"ruleSetVersion\": \"3.0\"\n      }\n    ]\n  }\n}",
-          "description": "Specify the Managed Rules definition that you want to create within the Resource Group."
+          "required": false,
+          "tooltip": "Specify the Resource tags that you want associate with your Azure resources. Ex:- tags = {\n    \"Environment\": \"Production\",\n    \"Compliance\": \"PCI\"\n}\n",
+          "description": "Specify the Resource tags that you want associate with your Azure resources. Tags are essentially Key-Value Pairs that provide a way to categorize and organize your resources for various purposes."
         },
         {
           "name": "customRules",
@@ -535,8 +535,8 @@
           "editable": true,
           "visible": true,
           "required": true,
-          "tooltip": "Specify the Name of the Policy.",
-          "description": "Specify the Name of the Policy."
+          "tooltip": "Specify the Name of the Policy which is to be fetched from Azure Web Application Firewall.",
+          "description": "Specify the Name of the Policy which is to be fetched from Azure Web Application Firewall."
         }
       ],
       "output_schema": {
@@ -629,14 +629,29 @@
     },
     {
       "operation": "list_policies",
-      "title": "List Policies",
+      "title": "Get Policy List",
       "annotation": "list_policies",
-      "description": "Lists all of the protection policies within a resource group.",
+      "description": "Lists all of the protection policies within a resource group or all the WAF Policies in a Subscription.",
       "category": "investigation",
       "is_config_required": true,
       "visible": true,
       "enabled": true,
-      "parameters": [],
+      "parameters": [
+        {
+          "name": "option",
+          "title": "Option",
+          "type": "select",
+          "editable": true,
+          "visible": true,
+          "required": true,
+          "tooltip": "Specify Whether if you want to get the Policies within a Resource Group Or Within the Whole Azure Subscription.",
+          "description": "Specify Whether if you want to get the Policies within a Resource Group Or Within the Whole Azure Subscription.",
+          "options": [
+            "Within a Resource Group",
+            "Within Whole Subscription"
+          ]
+        }
+      ],
       "output_schema": {
         "value": [
           {
@@ -705,89 +720,6 @@
                   "action": ""
                 }
               ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "operation": "list_all_policies",
-      "title": "List all Policies",
-      "annotation": "list_all_policies",
-      "description": "Gets all the WAF policies in a subscription.",
-      "category": "investigation",
-      "is_config_required": true,
-      "visible": true,
-      "enabled": true,
-      "parameters": [],
-      "output_schema": {
-        "value": [
-          {
-            "name": "",
-            "id": "",
-            "type": "",
-            "tags": {
-              "key1": "",
-              "key2": ""
-            },
-            "location": "",
-            "properties": {
-              "resourceState": "",
-              "provisioningState": "",
-              "policySettings": {
-                "state": "",
-                "mode": "",
-                "requestBodyEnforcement": "",
-                "maxRequestBodySizeInKb": "",
-                "requestBodyInspectLimitInKB": "",
-                "fileUploadEnforcement": "",
-                "fileUploadLimitInMb": "",
-                "requestBodyCheck": "",
-                "customBlockResponseStatusCode": "",
-                "customBlockResponseBody": "",
-                "logScrubbing": {
-                  "state": "",
-                  "scrubbingRules": [
-                    {
-                      "state": "",
-                      "matchVariable": "",
-                      "selectorMatchOperator": "",
-                      "selector": ""
-                    }
-                  ]
-                }
-              },
-              "customRules": [
-                {
-                  "name": "",
-                  "priority": "",
-                  "state": "",
-                  "ruleType": "",
-                  "matchConditions": [
-                    {
-                      "matchVariables": [
-                        {
-                          "variableName": "",
-                          "selector": ""
-                        }
-                      ],
-                      "operator": "",
-                      "negationConditon": "",
-                      "matchValues": [],
-                      "transforms": []
-                    }
-                  ],
-                  "action": ""
-                }
-              ],
-              "managedRules": {
-                "managedRuleSets": [
-                  {
-                    "ruleSetType": "",
-                    "ruleSetVersion": ""
-                  }
-                ]
-              }
             }
           }
         ]

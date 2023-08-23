@@ -14,8 +14,6 @@ logger = get_logger('azure-web-app-firewall')
 class AzureFirewall(Connector):
     def execute(self, config, operation, params, **kwargs):
         try:
-            config['connector_info'] = {"connector_name": self._info_json.get('name'),
-                                        "connector_version": self._info_json.get('version')}
             operation = operations.get(operation)
         except Exception as err:
             logger.exception(err)
@@ -23,8 +21,6 @@ class AzureFirewall(Connector):
         return operation(config, params)
 
     def check_health(self, config):
-        logger.info('starting health check')
         connector_info = {"connector_name": self._info_json.get('name'),
                           "connector_version": self._info_json.get('version')}
         check(config, connector_info)
-        logger.info('completed health check no errors')
