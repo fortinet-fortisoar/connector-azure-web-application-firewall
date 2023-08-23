@@ -629,7 +629,7 @@
     },
     {
       "operation": "list_policies",
-      "title": "List Policies",
+      "title": "Get Policy List",
       "annotation": "list_policies",
       "description": "Lists all of the protection policies within a resource group or all the WAF Policies in a Subscription.",
       "category": "investigation",
