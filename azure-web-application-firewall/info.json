@@ -9,7 +9,7 @@
   "category": "Firewall and Network Protection",
   "icon_small_name": "small.png",
   "icon_large_name": "large.png",
-  "help_online": "",
+  "help_online": " https://docs.fortinet.com/document/fortisoar/1.0.0/azure-web-application-firewall/666/azure-web-application-firewall-v1-0-0",
   "configuration": {
     "fields": [
       {
@@ -24,7 +24,7 @@
         ],
         "name": "auth_type",
         "value": "Without a User - Application Permissions",
-        "description": "Select the method using which you will get access tokens used to access the Azure WAF APIs.",
+        "description": "Select the method using which to get authentication tokens used to access the security graph APIs.",
         "onchange": {
           "Without a User - Application Permissions": [
             {
@@ -35,7 +35,7 @@
               "type": "text",
               "name": "resource",
               "value": "https://management.azure.com",
-              "description": "The service-based URI to connect and perform the automated operations. "
+              "description": "The service-based URL to connect and perform the automated operations."
             },
             {
               "title": "Client ID",
@@ -212,7 +212,7 @@
       "operation": "create_or_update_policy",
       "title": "Create Or Update Policy",
       "annotation": "create_or_update_policy",
-      "description": "Creates or update policy with specified rule set name within a resource group.",
+      "description": "Creates or updates policy with a specified rule set name within a resource group.",
       "category": "investigation",
       "is_config_required": true,
       "visible": true,
@@ -225,8 +225,8 @@
           "editable": true,
           "visible": true,
           "required": true,
-          "tooltip": "Specify the Name of the Policy you want to create.",
-          "description": "Specify the Name of the Policy you want to create."
+          "tooltip": "Specify the name of the policy to create.",
+          "description": "Specify the name of the policy to create."
         },
         {
           "name": "managedRules",
@@ -236,7 +236,7 @@
           "visible": true,
           "required": true,
           "tooltip": "Specify the Managed Rules definition that you want to create within the Resource Group. Ex-\n{\n  \"managedRules\": {\n    \"exclusions\": [],\n    \"managedRuleSets\": [\n      {\n        \"ruleGroupOverrides\": [],\n        \"ruleSetType\": \"OWASP\",\n        \"ruleSetVersion\": \"3.0\"\n      }\n    ]\n  }\n}",
-          "description": "Specify the Managed Rules definition that you want to create within the Resource Group."
+          "description": "Specify the managed rules definition that you want to create within the resource group."
         },
         {
           "name": "id",
@@ -245,8 +245,8 @@
           "editable": true,
           "visible": true,
           "required": false,
-          "tooltip": "Specify the Resource ID to which you want to apply the WAF policy. This can be found inside the Properties Fields of your Azure Resource, It is of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{resourceProviderNamespace}/{resourceType}/{resourceName}",
-          "description": "Specify the Resource ID to which you want to apply the WAF policy. This can be found inside the Properties Fields of your Azure Resource, It is of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+          "tooltip": "Specify the Resource ID to which you want to apply the WAF policy. This can be found inside the Properties Fields of your Azure Resource, It is of the form '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{resourceProviderNamespace}/{resourceType}/{resourceName}'",
+          "description": "Specify the Resource ID to which you want to apply the WAF policy. This can be found inside the Properties Fields of your Azure Resource, It is of the form '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{resourceProviderNamespace}/{resourceType}/{resourceName}'"
         },
         {
           "name": "location",
@@ -397,7 +397,7 @@
       "operation": "delete_policy",
       "title": "Delete Policy",
       "annotation": "delete_policy",
-      "description": "Deletes the Policy by the specified Policy name.",
+      "description": "Deletes the policy by the specified policy name. ",
       "category": "investigation",
       "is_config_required": true,
       "visible": true,
@@ -410,8 +410,8 @@
           "editable": true,
           "visible": true,
           "required": true,
-          "tooltip": "Specify the name of protection policy within a resource group which is to be deleted",
-          "description": "Specify the name of protection policy within a resource group which is to be deleted"
+          "tooltip": "Specify the name of protection policy, within a resource group, to be deleted.",
+          "description": "Specify the name of protection policy, within a resource group, to be deleted."
         }
       ],
       "output_schema": {
@@ -522,7 +522,7 @@
       "operation": "get_policy",
       "title": "Get Policy",
       "annotation": "get_policy",
-      "description": "Retrieve protection policy with specified name within a resource group.",
+      "description": "Retrieves protection policy with a specified name within a resource group.",
       "category": "investigation",
       "is_config_required": true,
       "visible": true,
@@ -535,8 +535,8 @@
           "editable": true,
           "visible": true,
           "required": true,
-          "tooltip": "Specify the Name of the Policy which is to be fetched from Azure Web Application Firewall.",
-          "description": "Specify the Name of the Policy which is to be fetched from Azure Web Application Firewall."
+          "tooltip": "Specify the Name of the policy to be fetched from Azure Web Application Firewall.",
+          "description": "Specify the Name of the policy to be fetched from Azure Web Application Firewall."
         }
       ],
       "output_schema": {
@@ -631,7 +631,7 @@
       "operation": "list_policies",
       "title": "Get Policy List",
       "annotation": "list_policies",
-      "description": "Lists all of the protection policies within a resource group or all the WAF Policies in a Subscription.",
+      "description": "Lists all the protection policies within a resource group or all the WAF Policies in a subscription.",
       "category": "investigation",
       "is_config_required": true,
       "visible": true,
@@ -644,8 +644,8 @@
           "editable": true,
           "visible": true,
           "required": true,
-          "tooltip": "Specify Whether if you want to get the Policies within a Resource Group Or Within the Whole Azure Subscription.",
-          "description": "Specify Whether if you want to get the Policies within a Resource Group Or Within the Whole Azure Subscription.",
+          "tooltip": "Specify if you want to get the policies within a resource group or within the whole Azure subscription.",
+          "description": "Specify if you want to get the policies within a resource group or within the whole Azure subscription.",
           "options": [
             "Within a Resource Group",
             "Within Whole Subscription"
