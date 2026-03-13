@@ -1,8 +1,10 @@
-""" Copyright start
-Copyright (C) 2008 - 2023 Fortinet Inc.
-All rights reserved.
-FORTINET CONFIDENTIAL & FORTINET PROPRIETARY SOURCE CODE
-Copyright end """
+"""
+Copyright start
+MIT License
+Copyright (c) 2026 Fortinet Inc
+Copyright end
+"""
+
 import requests
 from connectors.core.connector import get_logger, ConnectorError
 from .microsoft_api_auth import MicrosoftAuth
@@ -11,7 +13,7 @@ logger = get_logger('azure-web-application-firewall')
 
 
 class AzureWebAppFirewall(object):
-    def __init__(self, config):
+    def __init__(self, config, connector_info):
         self.server_url = config.get('resource').strip('/')
         if not self.server_url.startswith('https://') and not self.server_url.startswith('http://'):
             self.server_url = 'https://' + self.server_url
@@ -20,23 +22,18 @@ class AzureWebAppFirewall(object):
         self.api_version = config.get('api_version')
         self.verify_ssl = config.get('verify_ssl')
         self.ms_auth = MicrosoftAuth(config)
-        self.connector_info = config.pop('connector_info', '')
+        self.connector_info = connector_info
         self.token = self.ms_auth.validate_token(config, self.connector_info)
 
     def make_rest_call(self, endpoint, params=None, json=None, payload=None, method='GET'):
         headers = {'Authorization': self.token, 'Content-Type': 'application/json'}
         service_url = self.server_url + endpoint
+        logger.debug('Headers {0}'.format(headers))
         logger.debug('Request URL {0}'.format(service_url))
         try:
-            response = requests.request(method, service_url, data=payload, headers=headers, json=json, params=params,
+            response = requests.request(method, service_url, json=payload, headers=headers, params=params,
                                         verify=self.verify_ssl)
-
-            try:
-                from connectors.debug_utils.curl_script import make_curl
-                make_curl(method, endpoint, headers=headers, params=params, data=data, verify_ssl=self.verify_ssl)
-            except Exception as err:
-                logger.error(f"Error in curl utils: {str(err)}")
-
+            logger.debug("Response: {0}".format(response.content))
             if response.ok:
                 content_type = response.headers.get('Content-Type')
                 if response.text != "" and 'application/json' in content_type:
@@ -77,19 +74,21 @@ class AzureWebAppFirewall(object):
             raise ConnectorError('{0}'.format(e))
 
 
-def create_or_update_policy(config: dict, params: dict) -> dict:
+def create_or_update_policy(config: dict, params: dict, connector_info: dict) -> dict:
     try:
         params = _build_payload(params)
-        endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{params.get('policy_name')}?api-version={config.get('api_version')}"
+        policy_name = params.pop('policy_name')
+        endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{policy_name}?api-version={config.get('api_version')}"
         method = "PUT"
         prop_dict = {"properties": {}}
 
         for p in ['managedRules', 'customRules', 'policySettings']:
             if params.get(p) is not None:
-                prop_dict.get("properties").update(params.pop(p))
+                prop_dict["properties"][p] = params.pop(p)
 
         params.update(prop_dict)
-        AZ = AzureWebAppFirewall(config=config)
+        logger.debug("Params: {0}".format(params))
+        AZ = AzureWebAppFirewall(config=config, connector_info=connector_info)
         response = AZ.make_rest_call(endpoint=endpoint, method=method, payload=params)
         return response
     except Exception as err:
@@ -97,12 +96,12 @@ def create_or_update_policy(config: dict, params: dict) -> dict:
         raise ConnectorError(err)
 
 
-def delete_policy(config: dict, params: dict) -> dict:
+def delete_policy(config: dict, params: dict, connector_info: dict) -> dict:
     try:
         endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{params.get('policy_name')}?api-version={config.get('api_version')}"
         method = "DELETE"
 
-        AZ = AzureWebAppFirewall(config=config)
+        AZ = AzureWebAppFirewall(config=config, connector_info=connector_info)
         response = AZ.make_rest_call(endpoint=endpoint, method=method)
         return response
     except Exception as err:
@@ -110,12 +109,12 @@ def delete_policy(config: dict, params: dict) -> dict:
         raise ConnectorError(err)
 
 
-def get_policy(config: dict, params: dict) -> dict:
+def get_policy(config: dict, params: dict, connector_info: dict) -> dict:
     try:
         endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{params.get('policy_name')}?api-version={config.get('api_version')}"
         method = "GET"
 
-        AZ = AzureWebAppFirewall(config=config)
+        AZ = AzureWebAppFirewall(config=config, connector_info=connector_info)
         response = AZ.make_rest_call(endpoint=endpoint, method=method)
         return response
     except Exception as err:
@@ -123,18 +122,19 @@ def get_policy(config: dict, params: dict) -> dict:
         raise ConnectorError(err)
 
 
-def list_policies(config: dict, params: dict) -> dict:
+def list_policies(config: dict, params: dict, connector_info: dict) -> dict:
     try:
         if params.get("option") == "Within a Resource Group":
             endpoint = f"/subscriptions/{config.get('subscription_id')}/resourceGroups/{config.get('resource_group_name')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies?api-version={config.get('api_version')}"
             method = "GET"
-            AZ = AzureWebAppFirewall(config=config)
+            logger.debug("Endpoint".format(endpoint))
+            AZ = AzureWebAppFirewall(config=config, connector_info=connector_info)
             response = AZ.make_rest_call(endpoint=endpoint, method=method)
             return response
         else:
-            endpoint = f"/subscriptions/{config.get('subscription_id')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies?api-version={config.get('api-version')}"
+            endpoint = f"/subscriptions/{config.get('subscription_id')}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies?api-version={config.get('api_version')}"
             method = "GET"
-            AZ = AzureWebAppFirewall(config=config)
+            AZ = AzureWebAppFirewall(config=config, connector_info=connector_info)
             response = AZ.make_rest_call(endpoint=endpoint, method=method)
             return response
     except Exception as err:

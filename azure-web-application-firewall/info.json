@@ -1,15 +1,15 @@
 {
   "name": "azure-web-application-firewall",
   "label": "Azure Web Application Firewall",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The Azure WAF (Web Application Firewall) integration provides centralized protection of your web applications from common exploits and vulnerabilities. It enables you to control policies that are configured in the Azure Firewall management platform, and allows you to add, delete, or update policies, and also to get details of a specific policy or a list of policies.",
   "publisher": "Fortinet",
-  "cs_approved": false,
+  "cs_approved": true,
   "cs_compatible": true,
   "category": "Firewall and Network Protection",
   "icon_small_name": "small.png",
   "icon_large_name": "large.png",
-  "help_online": " https://docs.fortinet.com/document/fortisoar/1.0.0/azure-web-application-firewall/666/azure-web-application-firewall-v1-0-0",
+  "help_online": "",
   "configuration": {
     "fields": [
       {
@@ -239,6 +239,16 @@
           "description": "Specify the managed rules definition that you want to create within the resource group."
         },
         {
+          "name": "location",
+          "title": "Resource Location",
+          "type": "text",
+          "editable": true,
+          "visible": true,
+          "required": true,
+          "tooltip": "Specify the Resource Location. Ex- WestUs",
+          "description": "Specify the Resource Location. Ex- WestUs"
+        },
+        {
           "name": "id",
           "title": "Resource ID",
           "type": "text",
@@ -247,16 +257,6 @@
           "required": false,
           "tooltip": "Specify the Resource ID to which you want to apply the WAF policy. This can be found inside the Properties Fields of your Azure Resource, It is of the form '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{resourceProviderNamespace}/{resourceType}/{resourceName}'",
           "description": "Specify the Resource ID to which you want to apply the WAF policy. This can be found inside the Properties Fields of your Azure Resource, It is of the form '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{resourceProviderNamespace}/{resourceType}/{resourceName}'"
-        },
-        {
-          "name": "location",
-          "title": "Resource Location",
-          "type": "text",
-          "editable": true,
-          "visible": true,
-          "required": false,
-          "tooltip": "Specify the Resource Location. Ex- WestUs",
-          "description": "Specify the Resource Location. Ex- WestUs"
         },
         {
           "name": "tags",
@@ -649,7 +649,8 @@
           "options": [
             "Within a Resource Group",
             "Within Whole Subscription"
-          ]
+          ],
+          "value": "Within a Resource Group"
         }
       ],
       "output_schema": {

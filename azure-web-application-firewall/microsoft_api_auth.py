@@ -1,8 +1,9 @@
-""" Copyright start
-  Copyright (C) 2008 - 2023 Fortinet Inc.
-  All rights reserved.
-  FORTINET CONFIDENTIAL & FORTINET PROPRIETARY SOURCE CODE
-  Copyright end """
+"""
+Copyright start
+MIT License
+Copyright (c) 2026 Fortinet Inc
+Copyright end
+"""
 
 from requests import request
 from time import time, ctime
@@ -64,50 +65,42 @@ class MicrosoftAuth:
 
     def generate_token(self, REFRESH_TOKEN_FLAG):
         try:
-            if not self.auth_type == AUTH_BEHALF_OF_USER:
+            if self.auth_type == AUTH_USING_APP:
                 resp = self.acquire_token_with_client_credentials()
-                ts_now = time()
-                resp['expiresOn'] = (ts_now + resp['expires_in']) if resp.get("expires_in") else None
-                resp['accessToken'] = resp.get("access_token")
-                resp.pop("access_token")
-                return resp
             else:
                 resp = self.acquire_token_on_behalf_of_user(REFRESH_TOKEN_FLAG)
-                ts_now = time()
-                resp['expiresOn'] = (ts_now + resp['expires_in']) if resp.get("expires_in") else None
-                resp['accessToken'] = resp.get("access_token")
-                resp.pop("access_token")
-                return resp
+            ts_now = time()
+            resp['expiresOn'] = (ts_now + resp['expires_in']) if resp.get("expires_in") else None
+            resp['accessToken'] = resp.get("access_token")
+            resp.pop("access_token")
+            return resp
         except Exception as err:
             logger.error("{0}".format(err))
             raise ConnectorError("{0}".format(err))
 
     def validate_token(self, connector_config, connector_info):
-        if CONFIG_SUPPORTS_TOKEN:
-            ts_now = time()
-            if not connector_config.get('accessToken'):
-                logger.error('Error occurred while connecting server: Unauthorized')
-                raise ConnectorError('Error occurred while connecting server: Unauthorized')
-            expires = connector_config['expiresOn']
-            expires_ts = self.convert_ts_epoch(expires)
-            if ts_now > float(expires_ts):
-                REFRESH_TOKEN_FLAG = True
-                logger.info("Token expired at {0}".format(expires))
-                self.refresh_token = connector_config[
-                    'refresh_token'] if self.auth_type == AUTH_BEHALF_OF_USER else None
-                token_resp = self.generate_token(REFRESH_TOKEN_FLAG)
-                connector_config['accessToken'] = token_resp['accessToken']
-                connector_config['expiresOn'] = token_resp['expiresOn']
-                connector_config['refresh_token'] = token_resp[
-                    'refresh_token'] if self.auth_type == AUTH_BEHALF_OF_USER else None
-                update_connnector_config(connector_info['connector_name'], connector_info['connector_version'],
-                                         connector_config,
-                                         connector_config['config_id'])
+        ts_now = time()
+        if not connector_config.get('accessToken'):
+            logger.error('Error occurred while connecting server: Unauthorized')
+            raise ConnectorError('Error occurred while connecting server: Unauthorized')
+        expires = connector_config['expiresOn']
+        expires_ts = self.convert_ts_epoch(expires)
+        if ts_now > float(expires_ts):
+            REFRESH_TOKEN_FLAG = True
+            logger.info("Token expired at {0}".format(expires))
+            self.refresh_token = connector_config["refresh_token"]
+            token_resp = self.generate_token(REFRESH_TOKEN_FLAG)
+            connector_config['accessToken'] = token_resp['accessToken']
+            connector_config['expiresOn'] = token_resp['expiresOn']
+            connector_config['refresh_token'] = token_resp.get('refresh_token')
+            update_connnector_config(connector_info['connector_name'], connector_info['connector_version'],
+                                     connector_config,
+                                     connector_config['config_id'])
 
-                return "Bearer {0}".format(connector_config.get('accessToken'))
-            else:
-                logger.info("Token is valid till {0}".format(expires))
-                return "Bearer {0}".format(connector_config.get('accessToken'))
+            return "Bearer {0}".format(connector_config.get('accessToken'))
+        else:
+            logger.info("Token is valid till {0}".format(expires))
+            return "Bearer {0}".format(connector_config.get('accessToken'))
 
     def acquire_token_with_client_credentials(self):
         try:
@@ -191,5 +184,3 @@ def check(config, connector_info):
                                          config['config_id'])
     except Exception as err:
         raise ConnectorError(str(err))
-
-
