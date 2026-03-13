@@ -2,12 +2,15 @@
   "type": "workflow_collections",
   "data": [
     {
-      "uuid": "a73a2e94-b0da-4f75-a1f4-8cbee2461b9d",
       "@type": "WorkflowCollection",
-      "name": "Sample - Azure Web Application Firewall - 1.0.0",
-      "description": "The Azure WAF (Web Application Firewall) integration provides centralized protection of your web applications from common exploits and vulnerabilities. It enables you to control policies that are configured in the Azure Firewall management platform, and allows you to add, delete, or update policies, and also to get details of a specific policy or a list of policies.",
+      "name": "Sample - Azure Web Application Firewall - 1.1.0",
+      "description": "Sample playbooks for \"Azure Web Application Firewall\" connector. If you are planning to use any of the sample playbooks in your environment, ensure that you clone those playbooks and move them to a different collection, since the sample playbook collection gets deleted during connector upgrade and delete.",
       "visible": true,
       "image": null,
+      "uuid": "a73a2e94-b0da-4f75-a1f4-8cbee2461b9d",
+      "id": 235,
+      "deletedAt": null,
+      "importedBy": [],
       "recordTags": [
         "Azure",
         "azure-web-application-firewall"
@@ -15,109 +18,49 @@
       "workflows": [
         {
           "@type": "Workflow",
-          "uuid": "a47bd370-2c5c-4b20-945d-3c0c65d96c9c",
-          "collection": "/api/3/workflow_collections/a73a2e94-b0da-4f75-a1f4-8cbee2461b9d",
           "triggerLimit": null,
-          "description": "Creates or updates policy with a specified rule set name within a resource group.",
-          "name": "Create Or Update Policy",
+          "name": "Delete Policy",
+          "aliasName": null,
           "tag": "#Azure Web Application Firewall",
-          "recordTags": [
-            "Azure",
-            "azure-web-application-firewall"
-          ],
+          "description": "Deletes the policy by the specified policy name. ",
           "isActive": false,
           "debug": false,
           "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
           "parameters": [],
           "synchronous": false,
-          "triggerStep": "/api/3/workflow_steps/b327dffd-f557-44c4-8c4f-334a62c61daf",
+          "lastModifyDate": null,
+          "collection": "/api/3/workflow_collections/a73a2e94-b0da-4f75-a1f4-8cbee2461b9d",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/9036e27c-ad45-43d8-be0b-7696e6189429",
           "steps": [
             {
-              "uuid": "b327dffd-f557-44c4-8c4f-334a62c61daf",
               "@type": "WorkflowStep",
-              "name": "Start",
+              "name": "Delete Policy",
               "description": null,
-              "status": null,
-              "arguments": {
-                "route": "1a2a8aea-7f3b-41f5-9511-4daa62764b0d",
-                "title": "Azure Web Application Firewall: Create Or Update Policy",
-                "resources": [
-                  "alerts"
-                ],
-                "inputVariables": [],
-                "step_variables": {
-                  "input": {
-                    "records": "{{vars.input.records[0]}}"
-                  }
-                },
-                "singleRecordExecution": false,
-                "noRecordExecution": true,
-                "executeButtonText": "Execute"
-              },
-              "left": "20",
-              "top": "20",
-              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a"
-            },
-            {
-              "uuid": "31bd3638-e0d4-40cf-9802-cb55496200b6",
-              "@type": "WorkflowStep",
-              "name": "Create Or Update Policy",
-              "description": null,
-              "status": null,
               "arguments": {
                 "name": "Azure Web Application Firewall",
                 "config": "''",
                 "params": [],
-                "version": "1.0.0",
+                "version": "1.1.0",
                 "connector": "azure-web-application-firewall",
-                "operation": "create_or_update_policy",
-                "operationTitle": "Create Or Update Policy",
+                "operation": "delete_policy",
+                "operationTitle": "Delete Policy",
                 "step_variables": {
                   "output_data": "{{vars.result}}"
                 }
               },
-              "left": "188",
+              "status": null,
               "top": "120",
-              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671"
-            }
-          ],
-          "routes": [
+              "left": "188",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "494e8c44-d114-40e8-b72f-54cf81dcd2a3"
+            },
             {
-              "@type": "WorkflowRoute",
-              "uuid": "a58f53c2-1e57-49f1-a6bb-d3b930fc1245",
-              "label": null,
-              "isExecuted": false,
-              "name": "Start-> Create Or Update Policy",
-              "sourceStep": "/api/3/workflow_steps/b327dffd-f557-44c4-8c4f-334a62c61daf",
-              "targetStep": "/api/3/workflow_steps/31bd3638-e0d4-40cf-9802-cb55496200b6"
-            }
-          ]
-        },
-        {
-          "@type": "Workflow",
-          "uuid": "788adfd9-3987-4135-9c8e-434ac20aed5c",
-          "collection": "/api/3/workflow_collections/a73a2e94-b0da-4f75-a1f4-8cbee2461b9d",
-          "triggerLimit": null,
-          "description": "Deletes the policy by the specified policy name. ",
-          "name": "Delete Policy",
-          "tag": "#Azure Web Application Firewall",
-          "recordTags": [
-            "Azure",
-            "azure-web-application-firewall"
-          ],
-          "isActive": false,
-          "debug": false,
-          "singleRecordExecution": false,
-          "parameters": [],
-          "synchronous": false,
-          "triggerStep": "/api/3/workflow_steps/9036e27c-ad45-43d8-be0b-7696e6189429",
-          "steps": [
-            {
-              "uuid": "9036e27c-ad45-43d8-be0b-7696e6189429",
               "@type": "WorkflowStep",
               "name": "Start",
               "description": null,
-              "status": null,
               "arguments": {
                 "route": "eabfa839-f77c-482b-b8b5-9023d710c374",
                 "title": "Azure Web Application Firewall: Delete Policy",
@@ -130,154 +73,92 @@
                     "records": "{{vars.input.records[0]}}"
                   }
                 },
-                "singleRecordExecution": false,
+                "executeButtonText": "Execute",
                 "noRecordExecution": true,
-                "executeButtonText": "Execute"
+                "singleRecordExecution": false
               },
-              "left": "20",
-              "top": "20",
-              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a"
-            },
-            {
-              "uuid": "494e8c44-d114-40e8-b72f-54cf81dcd2a3",
-              "@type": "WorkflowStep",
-              "name": "Delete Policy",
-              "description": null,
               "status": null,
-              "arguments": {
-                "name": "Azure Web Application Firewall",
-                "config": "''",
-                "params": [],
-                "version": "1.0.0",
-                "connector": "azure-web-application-firewall",
-                "operation": "delete_policy",
-                "operationTitle": "Delete Policy",
-                "step_variables": {
-                  "output_data": "{{vars.result}}"
-                }
-              },
-              "left": "188",
-              "top": "120",
-              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671"
+              "top": "20",
+              "left": "20",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "9036e27c-ad45-43d8-be0b-7696e6189429"
             }
           ],
           "routes": [
             {
               "@type": "WorkflowRoute",
-              "uuid": "e1dbd11e-a82a-4d0b-a7aa-b225a4b114a5",
-              "label": null,
-              "isExecuted": false,
               "name": "Start-> Delete Policy",
+              "targetStep": "/api/3/workflow_steps/494e8c44-d114-40e8-b72f-54cf81dcd2a3",
               "sourceStep": "/api/3/workflow_steps/9036e27c-ad45-43d8-be0b-7696e6189429",
-              "targetStep": "/api/3/workflow_steps/494e8c44-d114-40e8-b72f-54cf81dcd2a3"
-            }
-          ]
-        },
-        {
-          "@type": "Workflow",
-          "uuid": "a2944100-5c6f-4e55-8319-bec62fd832c2",
-          "collection": "/api/3/workflow_collections/a73a2e94-b0da-4f75-a1f4-8cbee2461b9d",
-          "triggerLimit": null,
-          "description": "Retrieves protection policy with a specified name within a resource group.",
-          "name": "Get Policy",
-          "tag": "#Azure Web Application Firewall",
-          "recordTags": [
-            "Azure",
-            "azure-web-application-firewall"
-          ],
-          "isActive": false,
-          "debug": false,
-          "singleRecordExecution": false,
-          "parameters": [],
-          "synchronous": false,
-          "triggerStep": "/api/3/workflow_steps/770850e5-5510-4dbd-9106-36e7485ca3e0",
-          "steps": [
-            {
-              "uuid": "770850e5-5510-4dbd-9106-36e7485ca3e0",
-              "@type": "WorkflowStep",
-              "name": "Start",
-              "description": null,
-              "status": null,
-              "arguments": {
-                "route": "62898229-1924-4bfa-944f-0d8d2da3b34d",
-                "title": "Azure Web Application Firewall: Get Policy",
-                "resources": [
-                  "alerts"
-                ],
-                "inputVariables": [],
-                "step_variables": {
-                  "input": {
-                    "records": "{{vars.input.records[0]}}"
-                  }
-                },
-                "singleRecordExecution": false,
-                "noRecordExecution": true,
-                "executeButtonText": "Execute"
-              },
-              "left": "20",
-              "top": "20",
-              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a"
-            },
-            {
-              "uuid": "440bda2e-506e-411b-8511-f898e2dc4eef",
-              "@type": "WorkflowStep",
-              "name": "Get Policy",
-              "description": null,
-              "status": null,
-              "arguments": {
-                "name": "Azure Web Application Firewall",
-                "config": "''",
-                "params": [],
-                "version": "1.0.0",
-                "connector": "azure-web-application-firewall",
-                "operation": "get_policy",
-                "operationTitle": "Get Policy",
-                "step_variables": {
-                  "output_data": "{{vars.result}}"
-                }
-              },
-              "left": "188",
-              "top": "120",
-              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671"
-            }
-          ],
-          "routes": [
-            {
-              "@type": "WorkflowRoute",
-              "uuid": "beba85bf-320e-4a22-9ce2-68fe20148776",
               "label": null,
               "isExecuted": false,
-              "name": "Start-> Get Policy",
-              "sourceStep": "/api/3/workflow_steps/770850e5-5510-4dbd-9106-36e7485ca3e0",
-              "targetStep": "/api/3/workflow_steps/440bda2e-506e-411b-8511-f898e2dc4eef"
+              "group": null,
+              "uuid": "e1dbd11e-a82a-4d0b-a7aa-b225a4b114a5"
             }
+          ],
+          "groups": [],
+          "priority": null,
+          "playbookOrigin": "/api/3/picklists/15c1e8c9-22bf-4e66-8fbb-0a502d4a4a3f",
+          "isEditable": true,
+          "uuid": "788adfd9-3987-4135-9c8e-434ac20aed5c",
+          "id": 3915,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-web-application-firewall"
           ]
         },
         {
           "@type": "Workflow",
-          "uuid": "8b644f09-a3b9-4556-bc71-4e593a2a0b38",
-          "collection": "/api/3/workflow_collections/a73a2e94-b0da-4f75-a1f4-8cbee2461b9d",
           "triggerLimit": null,
-          "description": "Lists all the protection policies within a resource group or all the WAF Policies in a subscription.",
           "name": "Get Policy List",
+          "aliasName": null,
           "tag": "#Azure Web Application Firewall",
-          "recordTags": [
-            "Azure",
-            "azure-web-application-firewall"
-          ],
+          "description": "Lists all the protection policies within a resource group or all the WAF Policies in a subscription.",
           "isActive": false,
-          "debug": false,
+          "debug": true,
           "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
           "parameters": [],
           "synchronous": false,
+          "lastModifyDate": 1773217589,
+          "collection": "/api/3/workflow_collections/a73a2e94-b0da-4f75-a1f4-8cbee2461b9d",
+          "versions": [],
           "triggerStep": "/api/3/workflow_steps/0952f7f4-0775-4a2a-bd7f-05f61b63f183",
           "steps": [
             {
-              "uuid": "0952f7f4-0775-4a2a-bd7f-05f61b63f183",
+              "@type": "WorkflowStep",
+              "name": "Get Policy List",
+              "description": null,
+              "arguments": {
+                "name": "Azure Web Application Firewall",
+                "config": "6ea6354b-095b-497c-ae26-1ffa43e65b5f",
+                "params": {
+                  "option": "Within a Resource Group"
+                },
+                "version": "1.1.0",
+                "connector": "azure-web-application-firewall",
+                "operation": "list_policies",
+                "operationTitle": "Get Policy List",
+                "step_variables": {
+                  "output_data": "{{vars.result}}"
+                }
+              },
+              "status": null,
+              "top": "120",
+              "left": "188",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "7ce5b933-657c-4e0b-9253-16077aa0e932"
+            },
+            {
               "@type": "WorkflowStep",
               "name": "Start",
               "description": null,
-              "status": null,
               "arguments": {
                 "route": "fba148ec-ea83-4c76-b5b7-48d73cdb57ce",
                 "title": "Azure Web Application Firewall: Get Policy List",
@@ -290,50 +171,252 @@
                     "records": "{{vars.input.records[0]}}"
                   }
                 },
-                "singleRecordExecution": false,
+                "executeButtonText": "Execute",
                 "noRecordExecution": true,
-                "executeButtonText": "Execute"
+                "singleRecordExecution": false
               },
-              "left": "20",
-              "top": "20",
-              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a"
-            },
-            {
-              "uuid": "7ce5b933-657c-4e0b-9253-16077aa0e932",
-              "@type": "WorkflowStep",
-              "name": "Get Policy List",
-              "description": null,
               "status": null,
-              "arguments": {
-                "name": "Azure Web Application Firewall",
-                "config": "''",
-                "params": [],
-                "version": "1.0.0",
-                "connector": "azure-web-application-firewall",
-                "operation": "list_policies",
-                "operationTitle": "Get Policy List",
-                "step_variables": {
-                  "output_data": "{{vars.result}}"
-                }
-              },
-              "left": "188",
-              "top": "120",
-              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671"
+              "top": "20",
+              "left": "20",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "0952f7f4-0775-4a2a-bd7f-05f61b63f183"
             }
           ],
           "routes": [
             {
               "@type": "WorkflowRoute",
-              "uuid": "699ac4af-e5bf-4173-8d1d-833d934ca34d",
+              "name": "Start-> Get Policy List",
+              "targetStep": "/api/3/workflow_steps/7ce5b933-657c-4e0b-9253-16077aa0e932",
+              "sourceStep": "/api/3/workflow_steps/0952f7f4-0775-4a2a-bd7f-05f61b63f183",
               "label": null,
               "isExecuted": false,
-              "name": "Start-> Get Policy List",
-              "sourceStep": "/api/3/workflow_steps/0952f7f4-0775-4a2a-bd7f-05f61b63f183",
-              "targetStep": "/api/3/workflow_steps/7ce5b933-657c-4e0b-9253-16077aa0e932"
+              "group": null,
+              "uuid": "699ac4af-e5bf-4173-8d1d-833d934ca34d"
             }
+          ],
+          "groups": [],
+          "priority": null,
+          "playbookOrigin": "/api/3/picklists/15c1e8c9-22bf-4e66-8fbb-0a502d4a4a3f",
+          "isEditable": true,
+          "uuid": "8b644f09-a3b9-4556-bc71-4e593a2a0b38",
+          "id": 3917,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-web-application-firewall"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Policy",
+          "aliasName": null,
+          "tag": "#Azure Web Application Firewall",
+          "description": "Retrieves protection policy with a specified name within a resource group.",
+          "isActive": false,
+          "debug": true,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1773218375,
+          "collection": "/api/3/workflow_collections/a73a2e94-b0da-4f75-a1f4-8cbee2461b9d",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/770850e5-5510-4dbd-9106-36e7485ca3e0",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Policy",
+              "description": null,
+              "arguments": {
+                "name": "Azure Web Application Firewall",
+                "config": "6ea6354b-095b-497c-ae26-1ffa43e65b5f",
+                "params": {
+                  "policy_name": "TestingPolicy"
+                },
+                "version": "1.1.0",
+                "connector": "azure-web-application-firewall",
+                "operation": "get_policy",
+                "operationTitle": "Get Policy",
+                "step_variables": {
+                  "output_data": "{{vars.result}}"
+                }
+              },
+              "status": null,
+              "top": "120",
+              "left": "188",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "440bda2e-506e-411b-8511-f898e2dc4eef"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "62898229-1924-4bfa-944f-0d8d2da3b34d",
+                "title": "Azure Web Application Firewall: Get Policy",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records[0]}}"
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "20",
+              "left": "20",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "770850e5-5510-4dbd-9106-36e7485ca3e0"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start-> Get Policy",
+              "targetStep": "/api/3/workflow_steps/440bda2e-506e-411b-8511-f898e2dc4eef",
+              "sourceStep": "/api/3/workflow_steps/770850e5-5510-4dbd-9106-36e7485ca3e0",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "beba85bf-320e-4a22-9ce2-68fe20148776"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "playbookOrigin": "/api/3/picklists/15c1e8c9-22bf-4e66-8fbb-0a502d4a4a3f",
+          "isEditable": true,
+          "uuid": "a2944100-5c6f-4e55-8319-bec62fd832c2",
+          "id": 3916,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-web-application-firewall"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Create Or Update Policy",
+          "aliasName": null,
+          "tag": "#Azure Web Application Firewall",
+          "description": "Creates or updates policy with a specified rule set name within a resource group.",
+          "isActive": false,
+          "debug": true,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1773217843,
+          "collection": "/api/3/workflow_collections/a73a2e94-b0da-4f75-a1f4-8cbee2461b9d",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/b327dffd-f557-44c4-8c4f-334a62c61daf",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Create Or Update Policy",
+              "description": null,
+              "arguments": {
+                "name": "Azure Web Application Firewall",
+                "config": "6ea6354b-095b-497c-ae26-1ffa43e65b5f",
+                "params": {
+                  "id": "",
+                  "tags": "",
+                  "location": "centralindia",
+                  "customRules": "",
+                  "policy_name": "TestingPolicy",
+                  "managedRules": "{\n  \"managedRuleSets\": [\n    {\n      \"ruleSetType\": \"OWASP\",\n      \"ruleSetVersion\": \"3.2\"\n    }\n  ]\n}",
+                  "policySettings": ""
+                },
+                "version": "1.1.0",
+                "connector": "azure-web-application-firewall",
+                "operation": "create_or_update_policy",
+                "operationTitle": "Create Or Update Policy",
+                "step_variables": {
+                  "output_data": "{{vars.result}}"
+                }
+              },
+              "status": null,
+              "top": "120",
+              "left": "180",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "31bd3638-e0d4-40cf-9802-cb55496200b6"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "1a2a8aea-7f3b-41f5-9511-4daa62764b0d",
+                "title": "Azure Web Application Firewall: Create Or Update Policy",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records[0]}}"
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "20",
+              "left": "20",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "b327dffd-f557-44c4-8c4f-334a62c61daf"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start-> Create Or Update Policy",
+              "targetStep": "/api/3/workflow_steps/31bd3638-e0d4-40cf-9802-cb55496200b6",
+              "sourceStep": "/api/3/workflow_steps/b327dffd-f557-44c4-8c4f-334a62c61daf",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "a58f53c2-1e57-49f1-a6bb-d3b930fc1245"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "playbookOrigin": "/api/3/picklists/15c1e8c9-22bf-4e66-8fbb-0a502d4a4a3f",
+          "isEditable": true,
+          "uuid": "a47bd370-2c5c-4b20-945d-3c0c65d96c9c",
+          "id": 3914,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-web-application-firewall"
           ]
         }
       ]
     }
+  ],
+  "exported_tags": [
+    "Azure",
+    "azure-web-application-firewall"
   ]
 }
